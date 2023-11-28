@@ -25,31 +25,54 @@ const getCell = () => {
     return cell
 };
 
+const setContribution = (contribution, date, day) => {
+    for (let data in contribution) {
+        if (data === date) {
+            const value = contribution[data];
+            if (value > 0 && value <= 9) {
+                day.classList.add('low');
+            } else if (value >= 10 && value <= 19) {
+                day.classList.add('moreThenLow');
+            } else if (value >= 20 && value <= 29) {
+                day.classList.add('hight');
+            } else if (value > 30) {
+                day.classList.add('extraHight');
+            }
+        }
+    }
+};
+
 const run = async () => {
     const contribution = await getResponse();
     const today = new Date();
     const daysInPast = 357;
+    
+    const weeks = [];
+    let test = [];
+
     for (let i = 0; i < daysInPast; i++) {
         const day = getCell();
+        day.setAttribute('data-bs-toggle', 'tooltip');
+        day.setAttribute('data-bs-placement', 'top');
+        day.setAttribute('data-bs-trigger', 'click');
         const currentDay = new Date(today);
         currentDay.setDate(today.getDate() - (daysInPast - i));
         const dateDay = formattDate(currentDay);
-        for (let data in contribution) {
-            if (data === dateDay) {
-                const value = contribution[data];
-                if (value > 0 && value <= 9) {
-                    day.classList.add('low');
-                } else if (value >= 10 && value <= 19) {
-                    day.classList.add('moreThenLow');
-                } else if (value >= 20 && value <= 29) {
-                    day.classList.add('hight');
-                } else if (value > 30) {
-                    day.classList.add('extraHight');
-                }
-            }
+        day.setAttribute('title', currentDay);
+        setContribution(contribution, dateDay, day);
+        test.push(day)
+        if (test.length === 7) {
+            weeks.push(test);
+            test = []
         }
-        container.appendChild(day);
     }
+    weeks.forEach((week) => {
+        const weekWrapper = document.createElement('div');
+        week.forEach(day => {
+            weekWrapper.append(day)
+        })
+        container.append(weekWrapper);
+    })
 }
 
 run()
