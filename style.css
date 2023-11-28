@@ -16,3 +16,18 @@
     border: 1px solid rgba(0, 0, 0, 0.50);
 }
 
+.low {
+    background-color: #ACD5F2;
+}
+
+.moreThenLow {
+    background-color: #7FA8C9;
+}
+
+.hight {
+    background-color: #527BA0;
+}
+
+.extraHight {
+    background-color: #254E77;
+}
