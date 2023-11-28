@@ -1,8 +1,13 @@
 #root {
     display: flex;
-    flex-wrap: wrap;
     gap: 2px;
     width: 1105px;
+}
+
+.week {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .cell {
