@@ -21,3 +21,16 @@ const getCell = () => {
     container.appendChild(cell);
 };
 
+const run = async () => {
+    const contribution = await getResponse();
+    const today = new Date();
+    const daysInPast = 357;
+    console.log(container)
+    for (let i = 0; i < daysInPast; i++) {
+        const day = getCell();
+        const currentDay = new Date(today);
+        currentDay.setDate(today.getDate() - (daysInPast - i));
+    }
+}
+
+run()

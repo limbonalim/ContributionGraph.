@@ -1,0 +1,18 @@
+#root {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    width: 1105px;
+}
+
+.cell {
+    background-color: #EDEDED;
+    width: 17px;
+    height: 17px;
+    border: 1px solid transparent;
+}
+
+.cell:hover {
+    border: 1px solid rgba(0, 0, 0, 0.50);
+}
+
