@@ -72,11 +72,17 @@ const run = async () => {
 
         if (i === 1) {
             if (currentDay > 1) {
+                let emptyDays = [];
                 for (let j = 1; j < currentDay; j++) {
                     const emptyDay = getCell();
-                    emptyDay.className = 'empty';
-                    oneWeek.push(emptyDay);
+                    const current = new Date(today);
+                    current.setDate(today.getDate() - (daysInPast - i)-j);
+                    getToolTip(emptyDay, current, 0);
+                    setContribution(contribution, current, emptyDay)
+                    emptyDays.push(emptyDay);
                 }
+                emptyDays = emptyDays.reverse();
+                oneWeek = emptyDays.map((day) => day);
             }
             startMonth = months[current.getMonth()];
         }
@@ -102,10 +108,10 @@ const run = async () => {
 
 const getMounts = () => {
     let startIndex = months.findIndex((element) => element === startMonth);
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 13; i++) {
         const span = document.createElement('span');
         span.innerHTML = months[startIndex + i];
-        if ((startIndex + i) === months.length) {
+        if ((startIndex + 1) === months.length) {
             startIndex = -1;
         }
         monthsContainer.append(span);
