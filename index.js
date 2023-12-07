@@ -70,7 +70,6 @@ const run = async () => {
         getToolTip(day, dateDay, 0);
         setContribution(contribution, dateDay, day);
 
-
         if (i === 1) {
             if (currentDay > 1) {
                 for (let j = 1; j < currentDay; j++) {
