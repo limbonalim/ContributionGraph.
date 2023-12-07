@@ -23,21 +23,35 @@ const setContribution = (contribution, date, day) => {
             } else if (value > 30) {
                 day.classList.add('extraHeight');
             }
-            day.setAttribute('title', getToolTipTitle(date, value));
+            getToolTip(day, date, value);
         }
     }
 };
 
 const getToolTipTitle = (date, contributionValue) => {
-    const formatDate = new FormatDate().toStringFormatDate()
-
+    const formatDate = new FormatDate(date).toStringFormatDate()
     if (!contributionValue) {
         return `${formatDate} No contribution`;
     }
-
     return `${formatDate} ${contributionValue} contributions`;
-
 };
+
+const getToolTip = (day, date, contributionValue) => {
+    day.addEventListener('click', (event) => {
+        const last = container.getElementsByClassName('tooltip');
+        const days = container.getElementsByClassName('active');
+        if (last.length) {
+            days[0].classList.remove('active');
+            container.removeChild(last[0]);
+        }
+        day.classList.add('active')
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = getToolTipTitle(date, contributionValue);
+        wrapper.classList.add('tooltip')
+        container.append(wrapper);
+        wrapper.setAttribute('style', `left: ${event.target.offsetLeft}px; top: ${event.target.offsetTop-25}px;`)
+    })
+}
 
 const run = async () => {
     const contribution = await getResponse();
@@ -48,14 +62,14 @@ const run = async () => {
 
     for (let i = 1; i <= daysInPast; i++) {
         const day = getCell();
-        day.setAttribute('data-bs-toggle', 'tooltip');
-        day.setAttribute('data-bs-trigger', 'click');
+
         const current = new Date(today);
         current.setDate(today.getDate() - (daysInPast - i));
         const currentDay = current.getDay();
         const dateDay = new FormatDate(current).apiFormatDate();
-        day.setAttribute('title', getToolTipTitle(dateDay, 0))
+        getToolTip(day, dateDay, 0);
         setContribution(contribution, dateDay, day);
+
 
         if (i === 1) {
             if (currentDay > 1) {

@@ -42,11 +42,19 @@ span {
     gap: 2px;
 }
 
+.tooltip {
+    position: absolute;
+    background: #222;
+    color: #EDEDED;
+    padding: 5px;
+}
+
 .cell {
     background-color: #EDEDED;
     width: 17px;
     height: 17px;
     border: 1px solid transparent;
+    position: relative;
 }
 
 .cell:hover {
