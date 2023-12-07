@@ -2,26 +2,7 @@ const container = document.getElementById('root');
 const BASE_URL = 'https://dpg.gg/test/calendar.json';
 let startMonth;
 const monthsContainer = document.getElementById('months');
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-const getResponse = async () => {
-    try {
-        const response = await fetch(BASE_URL);
-        if (response.ok) {
-            const data = await response.json();
-            return data;
-        }
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const formattDate = (date) => {
-    const newDate = new Date(date);
-    const formattedDate = newDate.toISOString().slice(0, 10);
-    return formattedDate;
-};
+const months = new FormatDate().months;
 
 const getCell = () => {
     const cell = document.createElement('div');
@@ -48,21 +29,13 @@ const setContribution = (contribution, date, day) => {
 };
 
 const getToolTipTitle = (date, contributionValue) => {
-    const formatDate = (date) => {
-        const currentDay = new Date(date);
-        const dayOfWeek = daysOfWeek[currentDay.getDay()];
-        const month = months[currentDay.getMonth()];
-        const dayOfMonth = currentDay.getDate();
-        const year = currentDay.getFullYear();
-        const formattedDate = `${dayOfWeek} ${month} ${dayOfMonth}, ${year}`;
-        return formattedDate;
-    };
+    const formatDate = new FormatDate().toStringFormatDate()
 
     if (!contributionValue) {
-        return `${formatDate(date)} No contribution`;
+        return `${formatDate} No contribution`;
     }
 
-    return `${formatDate(date)} ${contributionValue} contributions`;
+    return `${formatDate} ${contributionValue} contributions`;
 
 };
 
@@ -80,7 +53,7 @@ const run = async () => {
         const current = new Date(today);
         current.setDate(today.getDate() - (daysInPast - i));
         const currentDay = current.getDay();
-        const dateDay = formattDate(current);
+        const dateDay = new FormatDate(current).apiFormatDate();
         day.setAttribute('title', getToolTipTitle(dateDay, 0))
         setContribution(contribution, dateDay, day);
 
@@ -92,7 +65,7 @@ const run = async () => {
                     oneWeek.push(emptyDay);
                 }
             }
-           startMonth = months[current.getMonth()];
+            startMonth = months[current.getMonth()];
         }
 
         oneWeek.push(day)
@@ -111,15 +84,19 @@ const run = async () => {
         })
         container.append(weekWrapper);
     })
-    let startIndex = months.findIndex((element)=> element === startMonth);
-    for( let i = 0; i < 12; i++) {
+    getMounts();
+}
+
+const getMounts = () => {
+    let startIndex = months.findIndex((element) => element === startMonth);
+    for (let i = 0; i < 12; i++) {
         const span = document.createElement('span');
         span.innerHTML = months[startIndex + i];
-        if (startIndex + 1 === months.length) {
+        if ((startIndex + i) === months.length) {
             startIndex = -1;
         }
         monthsContainer.append(span);
     }
 }
 
-run();
+void run();
