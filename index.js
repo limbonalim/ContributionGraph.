@@ -19,9 +19,9 @@ const setContribution = (contribution, date, day) => {
             } else if (value >= 10 && value <= 19) {
                 day.classList.add('moreThenLow');
             } else if (value >= 20 && value <= 29) {
-                day.classList.add('hight');
+                day.classList.add('height');
             } else if (value > 30) {
-                day.classList.add('extraHight');
+                day.classList.add('extraHeight');
             }
             day.setAttribute('title', getToolTipTitle(date, value));
         }
